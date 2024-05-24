@@ -25,7 +25,7 @@ vector<string> elemen(const string& infix) {
 
         if (isdigit(op)) {
             number += op;
-        } else if (op == '-' && (i == 0 || Operator(infix[i - 1]) || infix[i - 1] == '(' || infix[i - 1] == ')')) {
+        } else if (op == '-' && (i == 0 || Operator(infix[i - 1]) || infix[i - 1] == '(')) {
             number += op;
         } else {
             if (!number.empty()) {
@@ -43,7 +43,7 @@ vector<string> elemen(const string& infix) {
     
     vector<string> prosesElemen;
     for (size_t i = 0; i < elemens.size(); ++i) {
-        if (elemens[i] == "-" && (i == 0 || (Operator(elemens[i - 1][0]) && elemens[i - 1].size() == 1) || elemens[i - 1] == "(" || elemens[i - 1] == ")")) { 
+        if (elemens[i] == "-" && (i == 0 || (Operator(elemens[i - 1][0]) && elemens[i - 1].size() == 1) || elemens[i - 1] == "(")) { 
             prosesElemen.push_back("-1");
             prosesElemen.push_back("*");
         } else {
