@@ -6,69 +6,62 @@
 using namespace std;
 
 
-using namespace std;
-
-bool Operator(char op) {
-    return op == '+' || op == '-' || op == '*' || op == '/' || op == '%';
+bool isOperator(char ch) {
+    vector<char> op = {'+','-','*','/','%'};
+    return find(op.begin(), op.end(), ch) != op.end();
 }
 
-vector<string> elemen(const string& infix) {
-    vector<string> elemens;
-    string number;
+vector<string> stringToInfix(string str) {
+    vector<string> infix;
+    string angka;
 
-    for (size_t i = 0; i < infix.size(); ++i) {
-        char op = infix[i];
+    for (size_t i = 0; i < str.size(); ++i) {
+        char ch = str[i];
 
-        if (isspace(op)) {
+        if (isspace(ch)) {
             continue;
         }
-
-        if (isdigit(op)) {
-            number += op;
-        } else if (op == '-' && (i == 0 || Operator(infix[i - 1]) || infix[i - 1] == '(')) {
-            number += op;
-        } else {
-            if (!number.empty()) {
-                elemens.push_back(number);
-                number.clear();
+        else if (isdigit(ch)) {
+            angka += ch;
+        } 
+        else if (ch == '-' && (i == 0 || isOperator(str[i - 1]))) {
+            if(isOperator(str[i-1]) || str[i+1] == '('){
+                infix.push_back("-1");
+                infix.push_back("*");
             }
-
-            elemens.push_back(string(1, op));
+            else{
+                angka += ch;
+            }
+        } 
+        else {
+            if (!angka.empty()) {
+                infix.push_back(angka);
+                angka.clear();
+            }
+            infix.push_back(string(1, ch));
         }
     }
 
-    if (!number.empty()) {
-        elemens.push_back(number);
+    if (!angka.empty()) {
+        infix.push_back(angka);
     }
-    
-    vector<string> prosesElemen;
-    for (size_t i = 0; i < elemens.size(); ++i) {
-        if (elemens[i] == "-" && (i == 0 || (Operator(elemens[i - 1][0]) && elemens[i - 1].size() == 1) || elemens[i - 1] == "(")) { 
-            prosesElemen.push_back("-1");
-            prosesElemen.push_back("*");
-        } else {
-            prosesElemen.push_back(elemens[i]);
-        }
-    }
-
-    return prosesElemen;
+    return infix;
 }
 
-
-void printElemen(const vector<string>& elemens) {
-    for (size_t i = 0; i < elemens.size(); ++i) {
-        if (i != 0) cout << " ";
-        cout << elemens[i];
+void printInfix(const vector<string>& infix) {
+    for (size_t i = 0; i < infix.size(); ++i) {
+        cout << infix[i] << " ";
     }
     cout << endl;
 }
 
 int main() {
+    string str;
+    getline(cin, str);
 
-    string infix;
-    getline(cin, infix);
-    vector<string> elemens = elemen(infix);
-    printElemen(elemens);
+    vector<string> infix = stringToInfix(str);
+
+    printInfix(infix);
 
     return 0;
 }
