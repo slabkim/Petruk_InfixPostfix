@@ -6,9 +6,8 @@
 using namespace std;
 
 
-bool isOperator(char ch) {
-    vector<char> op = {'+','-','*','/','%'};
-    return find(op.begin(), op.end(), ch) != op.end();
+bool isOperator(char op) {
+    return op == '+' || op == '-' || op == '*' || op == '/' || op == '%';
 }
 
 vector<string> stringToInfix(string str) {
@@ -21,7 +20,7 @@ vector<string> stringToInfix(string str) {
         if (isspace(ch)) {
             continue;
         }
-        else if (isdigit(ch)) {
+        else if (isdigit(ch) || ch == '.') {
             angka += ch;
         } 
         else if (ch == '-' && (i == 0 || isOperator(str[i - 1]))) {
@@ -47,6 +46,7 @@ vector<string> stringToInfix(string str) {
     }
     return infix;
 }
+
 
 void printInfix(const vector<string>& infix) {
     for (size_t i = 0; i < infix.size(); ++i) {
